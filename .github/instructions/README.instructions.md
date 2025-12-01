@@ -38,7 +38,5 @@ AIを使う人間の本質的な仕事は**コンテキスト管理**だった�
 | Desktop | 自作 | [mcp-desktop-server](https://github.com/tomoharu-hayashi/mcp-desktop-server) |
 | Memory | 既存活用 | 調査中 |
 
-
-## Tech Stack
-- Protocol: Model Context Protocol (MCP)
-- Platform: macOS (Apple Silicon)
+## このリポジトリについて
+JARVISのドキュメント、プロンプト、設定ファイルを管理。MCPサーバーは別リポジトリで管理。
