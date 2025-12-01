@@ -74,6 +74,7 @@ graph TD
 | Server | 状態 | リポジトリ |
 |--------|------|------------|
 | **Desktop** | 自作 | [mcp-desktop-server](https://github.com/tomoharu-hayashi/mcp-desktop-server) |
+| **Skills** | 自作 | [mcp-skills-server](https://github.com/tomoharu-hayashi/mcp-skills-server) |
 | **Memory** | 既存活用予定 | TBD |
 
 ## Project Structure
