@@ -1,56 +1,86 @@
-# Project JARVIS 概要定義書
+# JARVIS
 
-## 1. ビジョンと基本コンセプト
+> **"Just A Rather Very Intelligent System"**
+
+自律型AIエージェント。人間はコンテキストの管理に徹し、実行はAIが担う。
+
+## Philosophy
 
 **「人間はコンテキスト（文脈）の支配に徹し、実行はAIが担う」**
 
-従来の「人間が作業し、AIが補助する」関係を逆転させます。ユーザーはプロジェクトの目標、背景、制約条件（コンテキスト）の管理に集中し、実際のPC操作や実作業は自律型AIエージェント「JARVIS」が実行します。
+従来の「人間が作業し、AIが補助する」関係を逆転。ユーザーはプロジェクトの目標・背景・制約条件の管理に集中し、実作業は JARVIS が実行する。
 
-## 2. ターゲット領域
+## Target Domains
 
-システムは主に以下の2つの業務領域をカバーします。
+| 領域 | 対象業務 |
+|------|----------|
+| **Engineering** | コーディング、環境構築、テスト、Git管理、デプロイ |
+| **Creative** | 素材収集、動画編集（DaVinci Resolve等）、レンダリング |
 
-- **エンジニアリング:** コーディング、環境構築、テスト、Git管理、デプロイ。
-- **動画制作・クリエイティブ:** 素材収集、動画編集ソフト（DaVinci Resolve等）の操作、レンダリング。
+## Architecture
 
 ```mermaid
 graph TD
-    subgraph Interchangeable_Clients ["【入れ替え可能なクライアント】(その時の使用コスト状況などで選択)"]
-        ClientA["Claude Desktop App"]
-        ClientB["Custom Gemini CLI<br/>(Python script via API)"]
-        ClientC["Local LLM Client<br/>(via Mac Studio)"]
+    subgraph Clients ["【クライアント】"]
+        ClientA["Gemini CLI (基幹)"]
+        ClientB["VS Code / Cursor"]
+        ClientC["Claude Desktop App"]
     end
 
-    subgraph The_Protocol ["Model Context Protocol (MCP)"]
-        direction TB
-        Pipe[Standard Input/Output JSON-RPC]
+    subgraph MCP ["Model Context Protocol"]
+        Pipe[JSON-RPC over stdio]
     end
 
-    subgraph JARVIS_Entity ["【JARVIS 本体】(永続化層)"]
-        direction TB
-        
-        subgraph Memory_Server ["MCP Server: Memory & Context"]
-            Logic[記憶の代謝ロジック]
-            VectorDB[("Vector DB<br/>Chroma/SQLite")]
-            Note["ここがJARVISの<br/>魂・知識・ログ"]
+    subgraph Servers ["【MCP Servers】"]
+        subgraph Desktop ["Desktop Server (自作)"]
+            Vision[Vision] --> Input[Input Control]
         end
-
-        subgraph Desktop_Server ["MCP Server: Desktop Control"]
-            Vision[Vision Analysis]
-            Input[Mouse/Key Input]
-        end
-        
-        subgraph Engineering_Server ["MCP Server: Engineering"]
-            FileSys[FileSystem]
-            Shell[Terminal]
+        subgraph Memory ["Memory Server (既存活用)"]
+            VectorDB[("Vector DB")]
         end
     end
 
-    ClientA --> Pipe
-    ClientB --> Pipe
-    ClientC --> Pipe
-
-    Pipe --> Memory_Server
-    Pipe --> Desktop_Server
-    Pipe --> Engineering_Server
+    Clients --> Pipe --> Servers
 ```
+
+> **設計思想:** Desktop操作が基本。ターミナルもエディタもGUIとして操作する。
+> **基幹システム:** Gemini CLI - 無料枠（60req/分、1000req/日）で高性能な1Mトークンコンテキスト
+
+## Tech Stack
+
+- **Protocol:** Model Context Protocol (MCP)
+- **Runtime:** Python 3.12+ / Node.js
+- **Vector DB:** Chroma / SQLite
+- **Platform:** macOS (Apple Silicon)
+
+## MCP Servers
+
+| Server | 状態 | リポジトリ |
+|--------|------|------------|
+| **Desktop** | 自作 | [mcp-desktop-server](https://github.com/tomoharu-hayashi/mcp-desktop-server) |
+| **Memory** | 既存活用予定 | TBD |
+
+## Project Structure
+
+```
+jarvis/
+├── README.md
+├── docs/
+│   └── architecture.md
+└── .github/
+    └── instructions/       # AI向け指示書
+```
+
+## Getting Started
+
+```bash
+# 1. Clone
+git clone https://github.com/tomoharu-hayashi/jarvis.git
+cd jarvis
+
+# 2. Setup (TBD)
+```
+
+## License
+
+MIT
