@@ -1,25 +1,28 @@
 {
-	"mcpServers": {
-		"calculator": {
-			"command": "uvx",
-			"args": ["mcp-server-calculator"],
-			"enabled": true
-		},
-
-		"time": {
-			"command": "uvx",
-			"args": ["mcp-server-time", "--local-timezone=Asia/Tokyo"],
-			"enabled": true
-		},
-	"context7": {
+  "model": {
+    "name": "gemini-3-pro-preview"
+  },
+  "mcpServers": {
+    "calculator": {
+      "command": "uvx",
+      "args": ["mcp-server-calculator"]
+    },
+    "time": {
+      "command": "uvx",
+      "args": ["mcp-server-time", "--local-timezone=Asia/Tokyo"]
+    },
+    "desktop": {
+      "command": "mcp-desktop",
+      "trust": true
+    },
+    "context7": {
 		"command": "bunx",
 		"args": ["-y", "@upstash/context7-mcp@latest"],
 		"enabled": true
 	  },
-	"desktop": {
-		"command": "mcp-desktop",
-		"enabled": true
-	}
-	}
-
+    "skills": {
+      "command": "mcp-skills",
+      "trust": true
+    }
+  }
 }
