@@ -67,7 +67,9 @@ graph TD
 
     subgraph Servers ["【MCP Servers】"]
         subgraph Brain ["Brain Server (自作)"]
-            EmbeddingSearch["Embedding検索"] --> AutoForget["自動忘却"]
+            EmbeddingSearch["Embedding検索"] --> GraphDB[("Graph DB")]
+            GraphDB --> AutoForget["自動忘却"]
+            GraphDB --> HopRetrieval["N-hop検索"]
         end
         subgraph Desktop ["Desktop Server (自作)"]
             Vision[Vision] --> Input[Input Control]

@@ -307,7 +307,31 @@ gemini mcp add --trust desktop uv -- run mcp-desktop-server
 }
 ```
 
-### Phase 2: Memory Server追加（TBD）
+### Phase 2: Brain Server追加
+
+```bash
+# mcp-brain-server を追加
+gemini mcp add --trust brain uv -- run mcp-brain-server
+```
+
+```json
+{
+  "mcpServers": {
+    "desktop": {
+      "command": "uv",
+      "args": ["run", "mcp-desktop-server"],
+      "cwd": "/path/to/mcp-desktop-server",
+      "trust": true
+    },
+    "brain": {
+      "command": "uv",
+      "args": ["run", "mcp-brain-server"],
+      "cwd": "/path/to/mcp-brain-server",
+      "trust": true
+    }
+  }
+}
+```
 
 ---
 

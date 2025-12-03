@@ -49,14 +49,15 @@
 │                   MCP Servers                          │
 │  ┌──────────────────────┼──────────────────────────┐  │
 │  │    ┌───────────┐ ┌───┴───┐                      │  │
-│  │    │ Knowledge │ │Desktop│                      │  │
+│  │    │   Brain   │ │Desktop│                      │  │
 │  │    │   (自作)  │ │ (自作)│                      │  │
 │  │    └─────┬─────┘ └───┬───┘                      │  │
 │  │          │           │                          │  │
 │  │    ┌─────▼─────┐ ┌───▼─────┐                    │  │
 │  │    │ Embedding │ │  macOS  │                    │  │
 │  │    │ + GraphDB │ │Automation│                    │  │
-│  │    └───────────┘ └─────────┘                    │  │
+│  │    │+ N-hop検索│ └─────────┘                    │  │
+│  │    └───────────┘                                │  │
 │  └─────────────────────────────────────────────────┘  │
 └────────────────────────────────────────────────────────┘
 ```
@@ -144,22 +145,25 @@
 
 **注意:** 汎用GUI操作は精度に限界あり。開発ワークフローの補助ツールとして使用。
 
-### Knowledge Server (自作)
+### Brain Server (自作)
 
-**リポジトリ:** [mcp-skills-server](https://github.com/tomoharu-hayashi/mcp-skills-server)
+**リポジトリ:** [mcp-brain-server](https://github.com/tomoharu-hayashi/mcp-brain-server)
 
-JARVISの「知識」。手順・事実・学習すべてを統合管理。
+JARVISの「記憶」。手順・事実・学習すべてを統合管理し、自動忘却機能を持つ高度な記憶サーバー。
 
 **責務:**
 
 - 知識の保存・意味検索・取得
 - プロジェクト単位での知識分離
 - 失敗からの学習を追記
+- 関連知識のN-hop検索による連想記憶
+- 自動忘却による記憶の最適化
 
 **技術:**
 
 - Embedding + ベクトル検索（意味検索）
-- 将来: Graph DB（知識間の関連付け）
+- Graph DB（知識間の関連付け、N-hop検索）
+- 自動忘却アルゴリズム
 
 **データ構造:**
 
@@ -172,7 +176,7 @@ knowledge/
       └── ...
 ```
 
-**設計判断:** 当初「Skills」と「Memory」を分離する案があったが、どちらもEmbeddingで検索する以上、分ける意味がない。KISS原則に従い統合。
+**設計判断:** 当初「Skills」と「Memory」を分離する案があったが、どちらもEmbeddingで検索する以上、分ける意味がない。KISS原則に従い統合し、Brain Serverとして実装。Graph DBによる関連付けとN-hop検索により、AIが過去の経験から学び、同じ文脈で関連知識を想起できる。
 
 ---
 
@@ -199,16 +203,16 @@ sequenceDiagram
     participant User as 人間（監視）
     participant Root as Root Agent
     participant Sub as Sub Agent
-    participant Knowledge as Knowledge Server
+    participant Brain as Brain Server
 
     User->>Root: 抽象的な目標
-    Root->>Knowledge: 関連知識を検索
-    Knowledge-->>Root: 関連知識（意味検索）
+    Root->>Brain: 関連知識を検索
+    Brain-->>Root: 関連知識（意味検索+N-hop）
     Root->>Sub: spawn(具体的タスク)
-    Sub->>Knowledge: 既存知識を検索
-    Knowledge-->>Sub: 手順・事実
+    Sub->>Brain: 既存知識を検索
+    Brain-->>Sub: 手順・事実+関連記憶
     Sub->>Sub: タスク実行
-    Sub->>Knowledge: 学んだ知識を保存
+    Sub->>Brain: 学んだ知識を保存
     Sub-->>Root: report(要約のみ)
     Note over Root,Sub: 詳細は破棄（自浄）
     Root-->>User: 完了報告
@@ -233,7 +237,7 @@ sequenceDiagram
 ### Phase 1: 開発プロジェクト自動化（現在）
 
 - **Agent Server実装:** spawn/kill/report/continueプロトコル
-- **Knowledge Server強化:** Graph DB対応、知識間の関連付け
+- **Brain Server機能拡張:** 自動忘却アルゴリズムの最適化、N-hop検索の精度向上
 - **状態永続化:** state.json / pending_tasks.json の設計
 
 ### Phase 2: 汎用PC作業への拡張（将来）
