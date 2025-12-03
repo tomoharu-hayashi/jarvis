@@ -66,8 +66,8 @@ graph TD
     end
 
     subgraph Servers ["【MCP Servers】"]
-        subgraph Skills ["Skills Server (自作)"]
-            Learning["学習記録"]
+        subgraph Brain ["Brain Server (自作)"]
+            EmbeddingSearch["Embedding検索"] --> AutoForget["自動忘却"]
         end
         subgraph Desktop ["Desktop Server (自作)"]
             Vision[Vision] --> Input[Input Control]
@@ -94,7 +94,7 @@ graph TD
 | Server | 状態 | リポジトリ |
 |--------|------|------------|
 | **Desktop** | 自作 | [mcp-desktop-server](https://github.com/tomoharu-hayashi/mcp-desktop-server) |
-| **Skills** | 自作 | [mcp-skills-server](https://github.com/tomoharu-hayashi/mcp-skills-server) |
+| **Brain** | 自作 | [mcp-brain-server](https://github.com/tomoharu-hayashi/mcp-brain-server) |
 | **Memory** | 既存活用予定 | TBD |
 
 ## Project Structure
