@@ -2,7 +2,9 @@
 
 > **"Just A Rather Very Intelligent System"**
 
-自律型AIエージェント。人間は監視に徹し、全ての操作はJARVISが実行する。
+開発プロジェクトの全自動化を目指す自律型AIエージェント。
+
+> **将来展望:** Desktop MCPを通じた全PC作業の自動化。現在はAI精度の制約により開発プロジェクトに特化。
 
 ## Philosophy
 
@@ -31,9 +33,25 @@ AIを使う人間の本質的な仕事は**コンテキスト管理**だった�
 
 ## Target Domains
 
-リアルタイム性を伴わない全てのコンピュータ操作
+開発プロジェクトにおける全てのタスク
+
+- コード実装・レビュー・リファクタリング
+- テスト作成・実行・修正
+- ドキュメント作成・更新
+- CI/CD・デプロイ
+- Issue管理・PR作成
 
 ## Architecture
+
+```
+人間（監視）
+  │
+  └─→ Root Agent
+        ├─ 抽象的目標を保持
+        ├─ 子エージェントに委譲（spawn）
+        ├─ 要約のみ受け取る（自浄）
+        └─ 全子孫の停止権（kill）
+```
 
 ```mermaid
 graph TD
@@ -48,19 +66,21 @@ graph TD
     end
 
     subgraph Servers ["【MCP Servers】"]
+        subgraph Skills ["Skills Server (自作)"]
+            Learning["学習記録"]
+        end
         subgraph Desktop ["Desktop Server (自作)"]
             Vision[Vision] --> Input[Input Control]
         end
         subgraph Memory ["Memory Server (既存活用)"]
-            VectorDB[("Vector DB")]
+            VectorDB[("長期記憶")]
         end
     end
 
     Clients --> Pipe --> Servers
 ```
 
-> **設計思想:** Desktop操作が基本。ターミナルもエディタもGUIとして操作する。
-> **基幹システム:** Gemini CLI - 無料枠（60req/分、1000req/日）で高性能な1Mトークンコンテキスト
+> **設計思想:** エージェントが自己継続し、コンテキストは自浄される。セッションの壁を超えて動作。
 
 ## Tech Stack
 

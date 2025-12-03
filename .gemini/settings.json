@@ -20,8 +20,8 @@
 		"args": ["-y", "@upstash/context7-mcp@latest"],
 		"enabled": true
 	  },
-    "skills": {
-      "command": "mcp-skills",
+    "brain": {
+      "command": "mcp-brain",
       "trust": true
     }
   }
