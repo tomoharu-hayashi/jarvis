@@ -1,12 +1,21 @@
 ---
 applyTo: "**"
 ---
-# JARVIS - 自律型AIエージェント
 
-## コンセプト
-「人間は監視に徹し、全ての操作はJARVISが実行する」
+# JARVIS
+
+> **"Just A Rather Very Intelligent System"**
+
+開発プロジェクトの全自動化を目指す自律型AIエージェント。
+
+> **将来展望:** Desktop MCPを通じた全PC作業の自動化。現在はAI精度の制約により開発プロジェクトに特化。
+
+## Philosophy
+
+**「人間は監視に徹し、全ての操作はJARVISが実行する」**
 
 ### 背景
+
 AIを使う人間の本質的な仕事は**コンテキスト管理**だった。
 
 - **抽象化**: 目的・背景・制約を構造化しAIに伝達
@@ -26,17 +35,93 @@ AIを使う人間の本質的な仕事は**コンテキスト管理**だった�
 | 中断・再開 | 割り込み対応、後で戻る | セッション管理 |
 | メタ認知 | 「今何をしているか」の把握 | 状態の可視化 |
 
-## 対象領域
-リアルタイム性を伴わない全てのコンピュータ操作
+## Target Domains
 
-## アーキテクチャ
-**Desktop First:** 全ての操作はGUIを通じて行う
+開発プロジェクトにおける全てのタスク
 
-### MCP Servers
-| Server | 状態 | 備考 |
-|--------|------|------|
-| Desktop | 自作 | [mcp-desktop-server](https://github.com/tomoharu-hayashi/mcp-desktop-server) |
-| Memory | 既存活用 | 調査中 |
+- コード実装・レビュー・リファクタリング
+- テスト作成・実行・修正
+- ドキュメント作成・更新
+- CI/CD・デプロイ
+- Issue管理・PR作成
 
-## このリポジトリについて
-JARVISのドキュメント、プロンプト、設定ファイルを管理。MCPサーバーは別リポジトリで管理。
+## Architecture
+
+```
+人間（監視）
+  │
+  └─→ Root Agent
+        ├─ 抽象的目標を保持
+        ├─ 子エージェントに委譲（spawn）
+        ├─ 要約のみ受け取る（自浄）
+        └─ 全子孫の停止権（kill）
+```
+
+```mermaid
+graph TD
+    subgraph Clients ["【クライアント】"]
+        ClientA["Gemini CLI (基幹)"]
+        ClientB["VS Code / Cursor"]
+        ClientC["Claude Desktop App"]
+    end
+
+    subgraph MCP ["Model Context Protocol"]
+        Pipe[JSON-RPC over stdio]
+    end
+
+    subgraph Servers ["【MCP Servers】"]
+        subgraph Skills ["Skills Server (自作)"]
+            Learning["学習記録"]
+        end
+        subgraph Desktop ["Desktop Server (自作)"]
+            Vision[Vision] --> Input[Input Control]
+        end
+        subgraph Memory ["Memory Server (既存活用)"]
+            VectorDB[("長期記憶")]
+        end
+    end
+
+    Clients --> Pipe --> Servers
+```
+
+> **設計思想:** エージェントが自己継続し、コンテキストは自浄される。セッションの壁を超えて動作。
+
+## Tech Stack
+
+- **Protocol:** Model Context Protocol (MCP)
+- **Runtime:** Python 3.12+ / Node.js
+- **Vector DB:** Chroma / SQLite
+- **Platform:** macOS (Apple Silicon)
+
+## MCP Servers
+
+| Server | 状態 | リポジトリ |
+|--------|------|------------|
+| **Desktop** | 自作 | [mcp-desktop-server](https://github.com/tomoharu-hayashi/mcp-desktop-server) |
+| **Skills** | 自作 | [mcp-skills-server](https://github.com/tomoharu-hayashi/mcp-skills-server) |
+| **Memory** | 既存活用予定 | TBD |
+
+## Project Structure
+
+```
+jarvis/
+├── README.md
+├── docs/
+│   └── architecture.md
+└── .github/
+    └── instructions/       # AI向け指示書
+```
+
+## Getting Started
+
+```bash
+# 1. Clone
+git clone https://github.com/tomoharu-hayashi/jarvis.git
+cd jarvis
+
+# 2. Setup (TBD)
+```
+
+## License
+
+MIT
