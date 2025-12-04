@@ -1,21 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm:*)",
-      "Bash(npx:*)",
-      "Bash(git diff:*)",
-      "Bash(git status:*)",
-      "Bash(git log:*)",
-      "Bash(cat:*)",
-      "Bash(ls:*)",
-      "Bash(mkdir:*)",
-      "Read(**)"
+      "Bash(*)",
+      "Edit(*)",
+      "Read(*)",
+      "Write(*)",
+      "mcp__*"
     ],
     "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Bash(rm -rf:*)",
-      "Bash(sudo:*)"
+      "Bash(rm -rf /)",
+      "Bash(sudo rm -rf:*)",
+      "Bash(:(){ :|:& };:)"
     ]
   },
   "hooks": {

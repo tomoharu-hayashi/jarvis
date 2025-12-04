@@ -581,36 +581,34 @@ settingSources: []
 
 ### 3. JARVIS固有の拡張要件
 
-| 要件 | Claude Code | JARVIS追加実装 |
+| 要件 | Claude Code | JARVIS実装 |
 |------|-------------|----------------|
-| **永続化** | Session (短期) | Vector DB (長期記憶) |
-| **自浄作用** | - | Graph DB + 忘却機構 |
-| **優先順位** | - | タスクの重み付け |
-| **割り込み** | Fork | セッション管理強化 |
-| **メタ認知** | Subagent events | 状態可視化 |
+| **タスク管理** | デフォルトタスク機能 | GitHub Projectsで永続化 |
+| **永続化** | Compact (セッション) | Compact + GitHub Projects |
+| **長期記憶** | - | Brain Server |
+| **自浄作用** | Subagent要約 | Brain + Compact |
 | **PC操作** | Terminal tools | Desktop MCP (将来) |
 
 ### 4. 実装ロードマップ
 
-#### Phase 1: Claude Code的基盤
+#### Phase 1: Claude Code統合
 
-- [x] MCP Serverの自作 (Desktop, Skills)
-- [ ] Gemini CLI統合 (Root Agent化)
-- [ ] Subagent定義機構 (programmatic)
-- [ ] Session管理 (resume/fork)
+- [x] MCP Serverの自作 (Desktop, Brain)
+- [x] Claude Code Subagent採用決定
+- [ ] `.claude/agents/*.md` 定義
+- [ ] `.claude/settings.json` Hooks設定
+- [ ] GitHub Projects連携（タスク永続化）
 
-#### Phase 2: JARVIS独自機能
+#### Phase 2: Brain Server強化
 
-- [ ] Vector DB統合 (Chroma)
-- [ ] Graph DB統合 (Neo4j or SQLite)
+- [ ] N-hop検索の精度向上
 - [ ] 忘却アルゴリズム
 - [ ] 優先度スコアリング
 
 #### Phase 3: 高度な自律性
 
-- [ ] 並行Child Agent実行
-- [ ] 自己モニタリング (メタ認知)
-- [ ] Desktop MCP統合 (全PC操作)
+- [ ] 自己モニタリング（メタ認知）
+- [ ] Desktop MCP統合（全PC操作）
 
 ## Key Takeaways
 
@@ -650,6 +648,6 @@ JARVISでは「抽象化」として強化すべき要素。
 
 **Next Steps**:
 
-1. Gemini CLIでのSubagent実装調査
-2. MCP Skills Serverの拡張 (Agent定義保存)
-3. Session管理のVector DB統合設計
+1. `.claude/agents/*.md` にSubagent定義を作成
+2. `.claude/settings.json` でHooks設定
+3. GitHub Projects連携フローの設計
