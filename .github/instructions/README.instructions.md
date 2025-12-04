@@ -60,9 +60,8 @@ AIを使う人間の本質的な仕事は**コンテキスト管理**だった�
 ```mermaid
 graph TD
     subgraph Clients ["【クライアント】"]
-        ClientA["Gemini CLI (基幹)"]
+        ClientA["Claude Code (基幹)"]
         ClientB["VS Code / Cursor"]
-        ClientC["Claude Desktop App"]
     end
 
     subgraph MCP ["Model Context Protocol"]
@@ -70,14 +69,11 @@ graph TD
     end
 
     subgraph Servers ["【MCP Servers】"]
-        subgraph Skills ["Skills Server (自作)"]
+        subgraph Brain ["Brain Server (自作)"]
             Learning["学習記録"]
         end
         subgraph Desktop ["Desktop Server (自作)"]
             Vision[Vision] --> Input[Input Control]
-        end
-        subgraph Memory ["Memory Server (既存活用)"]
-            VectorDB[("長期記憶")]
         end
     end
 
@@ -98,8 +94,7 @@ graph TD
 | Server | 状態 | リポジトリ |
 |--------|------|------------|
 | **Desktop** | 自作 | [mcp-desktop-server](https://github.com/tomoharu-hayashi/mcp-desktop-server) |
-| **Skills** | 自作 | [mcp-skills-server](https://github.com/tomoharu-hayashi/mcp-skills-server) |
-| **Memory** | 既存活用予定 | TBD |
+| **Brain** | 自作 | [mcp-brain-server](https://github.com/tomoharu-hayashi/mcp-brain-server) |
 
 ## Project Structure
 
