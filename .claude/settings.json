@@ -23,12 +23,13 @@
         ]
       }
     ],
-    "SubagentStop": [
+    "PostToolUse": [
       {
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $CLAUDE_PROJECT_DIR/.claude/hooks/subagent_stop.py"
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && make fmt lint"
           }
         ]
       }
@@ -38,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "make test"
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && make test"
           }
         ]
       }
