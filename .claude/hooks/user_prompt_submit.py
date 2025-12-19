@@ -1,8 +1,19 @@
 #!/usr/bin/env python3
 """UserPromptSubmit Hook: Brain自動コンテキスト注入"""
 
-import json
+import os
 import sys
+from pathlib import Path
+
+
+def _configure_pycache_prefix() -> None:
+    dev_tools_path = os.environ.get("DEV_TOOLS_PATH", "~/pj/my/dev-tools")
+    sys.pycache_prefix = str(Path(dev_tools_path).expanduser() / ".cache" / "pycache")
+
+
+_configure_pycache_prefix()
+
+import json
 from brain_client import search_and_get
 
 
