@@ -11,38 +11,5 @@
       "Bash(git reset --hard:*)",
       "Bash(git clean -fd:*)"
     ]
-  },
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 $CLAUDE_PROJECT_DIR/.claude/hooks/user_prompt_submit.py"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && make fmt lint"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && make test"
-          }
-        ]
-      }
-    ]
   }
 }
